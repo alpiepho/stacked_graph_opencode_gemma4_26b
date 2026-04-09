@@ -1,6 +1,9 @@
 # Stacked Graph Project
 
-A web-based visualization of stacked graphs using Chart.js and Vite.
+Try here: https://alpiepho.github.io/stacked_graph_gemma4_26b/
+
+A progressive web app for visualizing personal financial CSV data as an interactive stacked bar chart, binned by month.
+
 
 ## Features
 
