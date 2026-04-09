@@ -1,4 +1,4 @@
-import './style.css';
+import '../style.css';
 import Chart from 'chart.js/auto';
 
 /**
@@ -196,7 +196,18 @@ function init() {
 
     if (debugBtn) {
         debugBtn.addEventListener('click', () => {
-            const sample = 'date,amount,category\n2023-01-01,100,Food\n2023-01-15,200,Rent\n2023-02-01,50,Food\n2023-02-15,300,Rent';
+            const categories = ['Food', 'Rent', 'Utilities', 'Transport', 'Entertainment'];
+            const rows = [];
+            const startDate = new Date(2020, 0, 1);
+            for (let i = 0; i < 500; i++) {
+                const randomDay = Math.floor(Math.random() * 1500);
+                const date = new Date(startDate.getTime() + randomDay * 24 * 60 * 60 * 1000);
+                const dateStr = date.toISOString().split('T')[0];
+                const amount = Math.floor(Math.random() * 200) + 10;
+                const category = categories[Math.floor(Math.random() * categories.length)];
+                rows.push(`${dateStr},${amount},${category}`);
+            }
+            const sample = `date,amount,category\n${rows.join('\n')}`;
             input.value = sample;
             handleCSVChange(sample);
         });
