@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Stacked Graph</title>
+  <script type="module" crossorigin src="/stacked_graph_opencode_gemma4_26b/assets/index-CpZMaHjh.js"></script>
+  <link rel="stylesheet" crossorigin href="/stacked_graph_opencode_gemma4_26b/assets/index-OLJSgkMq.css">
+<link rel="manifest" href="/stacked_graph_opencode_gemma4_26b/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/stacked_graph_opencode_gemma4_26b/registerSW.js"></script></head>
+<body>
+    <div id="app">
+        <div id="editor-container">
+            <textarea id="csv-input" placeholder="Paste CSV here..."></textarea>
+            <button id="generate-debug">Generate Sample</button>
+        </div>
+        <div id="config-container" class="hidden">
+            <div class="config-group">
+                <label>Date Column</label>
+                <select id="date-col"></select>
+            </div>
+            <div class="config-group">
+                <label>Series Column</label>
+                <select id="series-col"></select>
+            </div>
+            <div class="config-group">
+                <label>Value Column</label>
+                <select id="value-col"></select>
+            </div>
+        </div>
+        <div id="chart-container">
+            <canvas id="chart-canvas"></canvas>
+        </div>
+        <div id="legend-container"></div>
+        <div id="error-container" class="hidden"></div>
+    </div>
+</body>
+</html>

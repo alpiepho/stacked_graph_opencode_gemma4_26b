@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/stacked_graph_opencode_gemma4_26b/sw.js', { scope: '/stacked_graph_opencode_gemma4_26b/' })})}
