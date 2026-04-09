@@ -16,8 +16,8 @@ A lightweight, highly interactive Progressive Web App (PWA) designed to visualiz
 ## Technical Stack
 - **Build Tool**: Vite
 - **Language**: Vanilla JavaScript (ES6+)
-- **Chart Engine**: Mermaid.js (`xychart-beta`)
-- **PWA Plugin**: `vite-plugin-pwa`
+- **Chart Engine**: Chart.js
+- **Chart Type**: Stacked Bar Chart (with interactivity support)
 - **Styling**: Standard CSS (or CSS Modules)
 - **Deployment**: GitHub Pages (via GitHub Actions)
 
@@ -43,7 +43,7 @@ const state = {
     - It calculates monthly aggregates based on `yyyy-mm-dd`.
 3.  **Update State**: `state.parsedData` and `state.activeFilters` are updated.
 4.  **Render**:
-    - The `ChartEngine` regenerates the Mermaid.js chart string and updates the DOM.
+    - The `ChartEngine` uses Chart.js to redraw the stacked bar chart in the canvas element.
     - The `UIController` updates the color key checkboxes and text area value.
 5.  **Persist**: `state` is serialized to `localStorage`.
 
@@ -59,16 +59,11 @@ The input CSV is expected to have the following columns:
 `statement_type, statement_date, account, entry_type, transaction_date, effective_date, category, description, amount`
 
 ## Implementation Details: Charting
-The chart will use the Mermaid `xychart-beta` syntax.
-**Example generated syntax**:
-```mermaid
-xychart-beta
-    title "Monthly Transactions"
-    x-axis ["Jan", "Feb", "Mar"]
-    yguard [0, 500, 1000]
-    bar [100, 200, 300]
-    bar [50, 150, 250]
-```
+The chart will use Chart.js to render the stacked bar chart.
+**Features**:
+- Interactive tooltips showing breakdown and totals.
+- Smooth transitions when data or filters change.
+- Responsive sizing for mobile/desktop views.
 
 ## Success Criteria
 - Chart updates within 300ms of text editing (post-debounce).
