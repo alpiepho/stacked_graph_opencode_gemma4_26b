@@ -1,6 +1,6 @@
 # Stacked Graph Project
 
-Try here: https://alpiepho.github.io/stacked_graph_gemma4_26b/
+Try here: https://alpiepho.github.io/stacked_graph_opencode_gemma4_26b/
 
 A progressive web app for visualizing personal financial CSV data as an interactive stacked bar chart, binned by month.
 
@@ -110,3 +110,8 @@ This project was developed using **opencode**, an interactive CLI tool, powered 
 - Opencode did not finish githup pages, again gave up and used Copilot
 
 In general, Opencode kind of worked and created the app faster with less steps, but the result is not as good.
+
+Here are the exported Opencode sessions:
+- session-ses_28ca.md - PWA creation
+- session-ses_28c5.md - Implement stacked graph design
+- session-ses_28c1.md - Fixing syntax error in main.js
