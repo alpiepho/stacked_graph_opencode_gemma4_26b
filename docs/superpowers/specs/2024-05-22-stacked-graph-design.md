@@ -1,72 +1,45 @@
-# Design Document: Stacked Graph PWA
+# Design Document: Dynamic CSV Stacked Graph PWA
 
 ## Overview
-A lightweight, highly interactive Progressive Web App (PWA) designed to visualize financial transaction data from a CSV format using stacked bar charts. The app allows users to paste, edit, and generate sample CSV data, with real-time chart updates and persistent settings.
+A highly interactive Progressive Web App (PWA) that visualizes CSV transaction data using stacked bar charts. Unlike static implementations, this version allows users to dynamically define which columns represent the date, the series (stacking category), and the numeric value after parsing the CSV.
 
 ## Core Features
-- **CSV Input**: A collapsible, editable text area for pasting or manually entering CSV data.
-- **Sample Data Generation**: A single-click utility to populate the text area with valid, structured transaction data for testing.
-- **Reactive Visualizations**: A stacked bar chart (using Mermaid.js `xychart-beta`) that updates automatically as the CSV is modified.
-- **Data Aggregation**: Automatic parsing of CSV rows into monthly bins (format: `yyyy-mm-dd`).
-- **Interactive Filtering**: A color key with checkboxes to toggle specific data series (e.g., specific accounts or categories) on/off.
-- **Rich Tooltips**: Hover interactions showing detailed breakdowns (Black, Blue, Red amounts, and Total).
-- **Persistence**: All user configurations (CSV content, active filters, etc.) are saved to and loaded from `localStorage`.
-- **PWA Capabilities**: Offline support, manifest for installation, and deployment via GitHub Pages.
+- **Dynamic CSV Parsing**: Automatically detects headers from the provided CSV text.
+- **User-driven Column Mapping**: Interactive selectors to assign **Date**, **Series**, and **Value** roles to existing CSV columns.
+- **Dynamic Filtering**: Ability to toggle categories (series) on/off via a legend to focus on specific data subsets.
+- **Persistent State**: Saves the CSV content and all configuration (column mappings, filters) to `localStorage`.
+- **Responsive Visualization**: A Chart.js-powered stacked bar chart that updates in real-time as data or configuration changes.
 
-## Technical Stack
-- **Build Tool**: Vite
-- **Language**: Vanilla JavaScript (ES6+)
-- **Chart Engine**: Chart.js
-- **Chart Type**: Stacked Bar Chart (with interactivity support)
-- **Styling**: Standard CSS (or CSS Modules)
-- **Deployment**: GitHub Pages (via GitHub Actions)
+## Technical Architecture
 
-## Architecture (Approach 1: Single-Source Single-Event)
-The application follows a reactive, unidirectional data flow pattern.
+### Data Flow
+1. **Input**: User edits CSV text in the editor.
+2. **Parsing**: The parser identifies column headers.
+3. **Configuration**: User selects which columns correspond to Date, Series, and Value.
+4. **Aggregation**: The app aggregates the raw CSV rows into time-based buckets (monthly) based on the selected Date column.
+5. **Rendering**: The Chart.js instance updates the stacked bar chart view.
 
-### 1. State Management
-A central `state` object serves as the Single Source of Truth:
-```javascript
-const state = {
-  rawCSV: "",           // The current text in the text area
-  parsedData: [],       // Structured, aggregated monthly data
-  activeFilters: [],    // Set of currently visible series/categories
-  lastUpdated: null     // Timestamp for sync/persistence
-};
-```
+### Component Breakdown
+- **CSV Editor**: A text area for manual CSV manipulation.
+- **Column Mapper**: A configuration UI to map CSV headers to functional roles (Date, Series, Value).
+- **Chart Container**: The wrapper for the Chart.js canvas.
+- **Legend/Filter UI**: A list of available series with checkboxes to toggle visibility.
+- **Error/Notification System**: Displays parsing errors (e.g., invalid number formats) or confirmation of state changes.
 
-### 2. Data Flow
-1.  **Input/Trigger**: User edits CSV, clicks "Generate Sample", or toggs a checkbox.
-2.  **Debounced Parsing**: 
-    - A `debounce` function waits for a pause in user input.
-    - The `Parser` module reads `state.rawCSV`.
-    - It calculates monthly aggregates based on `yyyy-mm-dd`.
-3.  **Update State**: `state.parsedData` and `state.activeFilters` are updated.
-4.  **Render**:
-    - The `ChartEngine` uses Chart.js to redraw the stacked bar chart in the canvas element.
-    - The `UIController` updates the color key checkboxes and text area value.
-5.  **Persist**: `state` is serialized to `localStorage`.
+### Data Schema (Internal)
+- **Raw Data**: Array of objects representing CSV rows.
+- **Mappings**: Object mapping roles (`date`, `_.series`, `value`) to column names.
+- **Aggregated Data**:
+  - `label`: The time period (e.g., "2023-10").
+  - `datasets`: Array of objects, each containing a `label` (series name) and `data` (array of values).
 
-### 3. Components
-- **`CSVEditor`**: Man    - **`CSVEditor`**: Manages the text area and its expand/collapse state.
-- **`DataGenerator`**: Logic for creating placeholder transaction rows.
-- **`ChartRenderer`**: The bridge between the parsed data and the Mermaid.js rendering logic.
-- **`FilterLegend`**: Generates the interactive color key/checkboxes.
-- **`StorageManager`**: Handles `localStorage` reads/writes.
+## Implementation Details
+- **Framework**: Vanilla JavaScript (for performance and lightness).
+- **Charting Library**: Chart.js.
+- **Storage**: Web `localStorage`.
+- **Parsing Strategy**: Split by line, then by delimiter (comma), and map headers to values.
 
-## Data Schema (Source CSV)
-The input CSV is expected to have the following columns:
-`statement_type, statement_date, account, entry_type, transaction_date, effective_date, category, description, amount`
-
-## Implementation Details: Charting
-The chart will use Chart.js to render the stacked bar chart.
-**Features**:
-- Interactive tooltips showing breakdown and totals.
-- Smooth transitions when data or filters change.
-- Responsive sizing for mobile/desktop views.
-
-## Success Criteria
-- Chart updates within 300ms of text editing (post-debounce).
-- Toggling a checkbox immediately recalculates and redraws the stacks.
-- Refreshing the page restores the exact same CSV content and filter state.
-- The app is installable on mobile/desktop via the PWA manifest.
+## Error Handling
+- **Invalid Numeric Data**: If a row contains a non-numeric value in the selected "Value" column, a notification is triggered, and the row is skipped or treated as zero.
+- **Missing Columns**: If a required mapping is missing, the UI prompts the user to complete the configuration.
+- **Malformed CSV**: Textarea validation to ensure consistent delimiter usage.
