@@ -101,3 +101,12 @@ To deploy this PWA to GitHub Pages:
 ## Created with opencode
 
 This project was developed using **opencode**, an interactive CLI tool, powered by the local **Gemma4** model. The development process leveraged specialized **superpowers** (skills) to automate tasks like generating files, managing dependencies, and updating documentation.
+
+
+## Short commings
+- had to restart Opencode session several times
+- had to keep telling to to "go"
+- Opencode got stuck writing a fix to a file...gave up and used Copliot with Claude Sonnet 4.6 Hiku
+- Opencode did not finish githup pages, again gave up and used Copilot
+
+In general, Opencode kind of worked and created the app faster with less steps, but the result is not as good.

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  base: '/stacked_graph_opencode_gemma4_26b/',
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
